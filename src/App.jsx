@@ -1,7 +1,9 @@
+import Login from "./Pages/Login";
+
 function App() {
   return (
     <>
-      <h1 className="text-center font-bold text-5xl">NarrowLite</h1>
+      <Login />
     </>
   );
 }
