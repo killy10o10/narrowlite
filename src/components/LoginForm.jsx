@@ -1,15 +1,18 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 function LoginForm({ onLogin }) {
-  const [state, setState] = useState({
+  const isLoading = useSelector(state => state.auth.loading);
+
+  const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange =  (e) => {
     const { name, value } = e.target;
-    setState((prevState) => ({
+    setFormData((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -17,7 +20,7 @@ function LoginForm({ onLogin }) {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    onLogin(state);
+    onLogin(formData);
   };
 
   return (
@@ -48,8 +51,9 @@ function LoginForm({ onLogin }) {
           placeholder="Enter your password"
         />
       </div>
-      <button onClick={handleLogin} type="submit" className="btn btn-primary w-full mt-3">
-        Log In
+      <button onClick={handleLogin} disabled={isLoading} type="submit" className="btn btn-primary w-full mt-3">
+        {isLoading && <span className="loading loading-spinner"></span>}
+        { isLoading ? 'Logging In' : 'Log In'}
       </button>
     </form>
   );
