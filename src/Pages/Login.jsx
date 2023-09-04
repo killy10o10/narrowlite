@@ -1,14 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import LoginForm from "../components/LoginForm";
+import { useDispatch } from "react-redux";
 
 import backgroundImg from '/loginbg.png';
 import logo from '/narrowlite.svg';
+import { signIn } from "../redux/authSlice";
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
-  const handleLogin = (formData) => {
+  const handleLogin = async (formData) => {
     const { username, password } = formData;
     if (username.length === 0 && password.length === 0) {
       toast.error("Please provide a username and password!");
@@ -17,7 +20,18 @@ function Login() {
     } else if (!username) {
       toast.error("Please provide a username!");
     } else {
-      navigate('dashboard', { state: username });
+      const actionResult = await dispatch(signIn(formData));
+      try {
+        if(actionResult.error) {
+          toast.error("wrong username or password!");
+        }
+        else {
+          const userData = actionResult.payload;
+          navigate('dashboard', { state: {userData, username} });
+        }
+      } catch (error) {
+        toast.warning(error)
+      }
     }
   };
 

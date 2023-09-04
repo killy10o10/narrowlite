@@ -17,7 +17,7 @@ function Dashboard() {
 
   const notify = () => {
     if (showToast) {
-      toast.success(`Welcome ${state}`);
+      toast.success(`Welcome ${state.username}`);
     }
   };
 
