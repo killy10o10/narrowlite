@@ -21,7 +21,7 @@ export const signIn = createAsyncThunk('auth/signIn', async (userData) => {
     `http://217.76.51.143/nlapi/login.php?Username=${userData.username}&Password=${userData.password}`,
     {
       method: 'GET',
-      mode: 'cors',
+      mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json',
       },
