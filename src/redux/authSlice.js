@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+// import axios from 'axios';
 
 const initialState = {
   user: null,
@@ -7,13 +7,29 @@ const initialState = {
   error: null,
 };
 
-export const signIn = createAsyncThunk('auth/signIn', async (userData, { rejectWithValue }) => {
-  try {
-    const response = await axios.post('http://217.76.51.143/nlapi/login.php', userData);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response.data);
-  }
+// export const signIn = createAsyncThunk('auth/signIn', async (userData, { rejectWithValue }) => {
+//   try {
+//     const response = await axios.get('http://217.76.51.143/nlapi/login.php', userData);
+//     return response.data;
+//   } catch (error) {
+//     return rejectWithValue(error.response.data);
+//   }
+// });
+
+export const signIn = createAsyncThunk('auth/signIn', async (userData) => {
+  const response = await fetch(
+    `http://217.76.51.143/nlapi/login.php?Username=${userData.username}&Password=${userData.password}`,
+    {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  const data = await response.json();
+  return data;
 });
 
 const authSlice = createSlice({

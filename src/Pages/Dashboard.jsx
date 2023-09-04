@@ -7,6 +7,8 @@ function Dashboard() {
   const location = useLocation();
   const { state } = location;
 
+  console.log(state)
+
   const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
