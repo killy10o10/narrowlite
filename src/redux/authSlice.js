@@ -27,7 +27,6 @@ export const signIn = createAsyncThunk('auth/signIn', async (userData) => {
       },
     }
   );
-
   const data = await response.json();
   return data;
 });

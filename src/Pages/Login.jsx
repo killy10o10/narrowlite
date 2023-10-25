@@ -27,7 +27,12 @@ function Login() {
         }
         else {
           const userData = actionResult.payload;
-          navigate('dashboard', { state: {userData, username} });
+          if(!userData.ProfileID.length) {
+            toast.error("Wrong username or password")
+          }
+          if(userData.ProfileID.length) {
+            navigate('dashboard', { state: {userData, username} });
+          }
         }
       } catch (error) {
         toast.warning(error)
