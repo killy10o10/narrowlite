@@ -18,7 +18,7 @@ function Dashboard() {
   const [openModal, setOpenModal] = useState(undefined);
 
   const toggleModal = () => {
-    setOpenModal('dismissible')
+    setOpenModal('pop-up')
   }
   useEffect(() => {
     if (state) {
