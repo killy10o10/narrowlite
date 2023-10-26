@@ -7,7 +7,9 @@ const SubscriptionModal = ({openModal, setOpenModal}) => {
   const [formData, setFormData] = useState({
     monthsToBuy: 1,
     paymentService: "",
-    phoneNumber: ""
+    phoneNumber: "",
+    costPerMonth: 300,
+    branches: 4
   })
 
   const handleChange = (e) => {
@@ -23,6 +25,8 @@ const SubscriptionModal = ({openModal, setOpenModal}) => {
     console.log(formData);
     setOpenModal(undefined)
   }
+
+  const totalSubscribtionCost = formData.branches * formData.monthsToBuy * formData.costPerMonth
   return (
     <>
       <Modal popup show={openModal === 'pop-up'}  onClose={() => setOpenModal(undefined)}>
@@ -30,20 +34,26 @@ const SubscriptionModal = ({openModal, setOpenModal}) => {
         <Modal.Body>
           <div className="space-y-6">
             <form>
-              <div className="w-fit my-5" id="select">
-                <div className="mb-2 block">
-                  <Label className="font-bold text-lg" htmlFor="months-to-buy" value="Select Months to Buy"/>
+              <div className="flex justify-between my-5" id="select">
+                <div className="w-fit">
+                  <div className="mb-2 block">
+                    <Label className="font-bold text-lg" htmlFor="months-to-buy" value="Select Months to Buy"/>
+                  </div>
+                  <Select  name="monthsToBuy" onChange={handleChange} id="months-to-buy" required>
+                    {
+                      [...Array(36)].map((_, index) => {
+                        const option = <option key={index} value={index + 1}>{index + 1}</option>;
+                        return option;
+                      }) 
+                    }
+                  </Select>
                 </div>
-                <Select name="monthsToBuy" onChange={handleChange} id="months-to-buy" required>
-                  {
-                    [...Array(36)].map((_, index) => {
-                      const option = <option key={index} value={index + 1}>{index + 1}</option>;
-                      return option;
-                    }) 
-                  }
-                </Select>
+                <div className="grid gap-2">
+                  <Label className="font-bold text-lg">Total Subscribtion Cost</Label>
+                  <p className="text-lg text-center">GH₵ {totalSubscribtionCost}</p>
+                </div>
               </div>
-              <h3 className="text-center font-bold text-2xl">Choose Payment Method</h3>
+              <h3 className="text-center font-bold text-2xl my-8">Choose Payment Method</h3>
               <div id="payment-method" className="flex flex-col md:flex-row items-center justify-center gap-10 mt-5">
                 <div className="flex items-center">
                   <Radio onChange={handleChange} id="mtn"name="paymentService" value="mtn"/>
@@ -58,11 +68,10 @@ const SubscriptionModal = ({openModal, setOpenModal}) => {
                   <Label className="h-[125px] flex flex-col items-center justify-center" htmlFor="airtel-tigo"><img src="/airtel-tigo.svg" alt="Airtel Tigo Money" /> <span className="mt-auto">Airtel Tigo Money</span></Label>
                 </div>
               </div>
-              <div id="total-cost" className="mt-10">
-                 <Label htmlFor="phone" className="font-bold text-xl flex items-center gap-2">Phone Number: <TextInput id="phone" className="w-[70%]" name="phoneNumber" onChange={handleChange} placeholder="0543123456" type="tel" /> </Label> 
-           
+              <div id="total-cost" className="flex items-center justify-center my-12">
+                 <Label htmlFor="phone" className="font-bold text-xl flex items-center gap-2">Payment Number: <TextInput id="phone" className="w-fit" name="phoneNumber" onChange={handleChange} placeholder="0543123456" type="tel" /></Label> 
               </div>
-              <Button onClick={handleSubmit} type="submit" size="lg" className="w-full mt-5">Make Payment</Button>
+              <Button onClick={handleSubmit} type="submit" size="lg" className="w-full mt-5">Process & Pay</Button>
             </form>
           </div>
         </Modal.Body>
